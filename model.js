@@ -27,7 +27,16 @@ const postschema = {
     description: {
         type: String,
         require: [true, "description is mandotry"]
-    }
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: [true, 'User id is mandatory']
+      },
+      mediaUrl: {
+        type: String,
+        required: [true, 'Media URL is mandatory']
+      }
 }
 
 const userSchema = new mongoose.Schema(userschema);
