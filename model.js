@@ -4,7 +4,7 @@ mongoose.connect("mongodb://localhost:27017/cgig").then(
     ()=>{console.log("Connected with the database....")}
 ).catch(()=>{console.log("Connection fail  with database...")})
 
-const schema ={
+const userschema ={
     name: {
         type: String,
         required: [true, "Name can't be optional"]
@@ -19,6 +19,21 @@ const schema ={
     }
 }
 
-const postSchema = mongoose.Schema(schema);
+const postschema = {
+    title:{
+        type: String,
+        required: [true, "title is mandotry"]
+    },
+    description: {
+        type: String,
+        require: [true, "description is mandotry"]
+    }
+}
 
-module.exports = mongoose.model('User', postSchema);
+const userSchema = new mongoose.Schema(userschema);
+const postSchema = new mongoose.Schema(postschema);
+
+const User = mongoose.model('User', userSchema);
+const Post = mongoose.model('Post', postSchema);
+
+module.exports = { User, Post };
