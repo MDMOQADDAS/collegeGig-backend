@@ -90,17 +90,15 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-// Protected routes
+//Protected routes
 router.get('/protected', authorize, (req, res) => {
   res.json({ message: true });
 });
 
 // Middleware for authorization
-function authorize(req, res, next) {
-  //we created this variable to handle the authorization
-  //we are fetching the actual user who created the post
-  // requestedUserId=null;
- 
+async function authorize(req, res, next) {
+  let requestedUserId=null;
+  
   try {
     const token = req.headers.authorization.split(' ')[1];
     const decoded = jwt.verify(token, secret);
@@ -110,20 +108,33 @@ function authorize(req, res, next) {
     }
 
     // Check if user is authorized to access the resource
-    if(req.params.id)
-    { Post.findById(req.params.id , (err, result)=>{
-      if(err) console.log(err)
-      else{
-        requestedUserId = result.userId.toString()
-        //console.log(requestedUserId)
+    if (req.params.id) {
+      try {
+        const post = await Post.findById(req.params.id).exec();
+        if (post) {
+          requestedUserId = post.userId.toString();
+        }
+      } catch (err) {
+        console.log(err);
       }
-     })}
+    }
+
+    //  if (req.params.id)
+    //  { Post.findById(req.params.id , (err, result)=>{
+     
+    //    if(result){
+    //      requestedUserId = result.userId.toString()
+    //     //console.log(requestedUserId)
+    //   }
+    //   else(err) => console.log(err)
+    //  })}
    //here we have to work
    //we have to write in such a way read and add don't lie in condition
    //updated and delete go inside condition and after this take action
 
+   //console.log("post id: "  + req.params.id+ " userid: " + decoded.userId + " Request User Id: "+ requestedUserId)
     if (req.params.id &&  decoded.userId !== requestedUserId) {
-     
+   //  console.log("inside 403 error")
       return res.status(403).json({ message: 'Not authorized to access this resource' });
     }
 
@@ -134,25 +145,7 @@ function authorize(req, res, next) {
   }
 }
 
-// function authorize(req, res, next) {
-//   try {
-//     const authHeader = req.headers.authorization;
-//     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-//       return res.status(401).json({ message: 'Authorization header missing or invalid' });
-//     }
-//     const token = authHeader.split(" ")[1];
-//     const decoded = jwt.verify(token, secret);
-//     if (!decoded.userId) {
-//       return res.status(401).json({ message: 'Invalid token' });
-//     }
-//     // Check if user exists in database and add to req.userData
-//     // ...
-//     req.userData = decoded;
-//     next();
-//   } catch (error) {
-//     return res.status(401).json({ message: 'Auth failed' });
-//   }
-// }
+
 
 
 //Logout route
@@ -236,7 +229,25 @@ router.delete('/posts/:id', authorize,  (req, res) => {
   });
 });
 
-
+// function authorize(req, res, next) {
+//   try {
+//     const authHeader = req.headers.authorization;
+//     if (!authHeader || !authHeader.startsWith('Bearer ')) {
+//       return res.status(401).json({ message: 'Authorization header missing or invalid' });
+//     }
+//     const token = authHeader.split(" ")[1];
+//     const decoded = jwt.verify(token, secret);
+//     if (!decoded.userId) {
+//       return res.status(401).json({ message: 'Invalid token' });
+//     }
+//     // Check if user exists in database and add to req.userData
+//     // ...
+//     req.userData = decoded;
+//     next();
+//   } catch (error) {
+//     return res.status(401).json({ message: 'Auth failed' });
+//   }
+// }
 
 // // Create a new post
 // router.post('/posts', (req, res) => {
