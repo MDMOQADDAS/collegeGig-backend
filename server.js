@@ -57,7 +57,7 @@ router.post("/login", async (req, res) => {
     // create jwt token
     const token = jwt.sign({ email: user.email, userId: user._id }, secret, { expiresIn: '1h' });
     //console.log(user._id)
-    res.status(200).json({ token, expiresIn: 3600, userId: user._id });
+    res.status(200).json({ token, expiresIn: 3600, userId: user._id , name: user.name });
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error"); // handle internal server error
@@ -161,10 +161,12 @@ router.post('/logout', authorize, (req, res) => {
 router.post('/posts', authorize,  (req, res) => {
   
   const post = new Post({
+    name: req.body.name,
     title: req.body.title,
     description: req.body.description,
     userId: req.body.userId, // set the user id to the post
-    mediaUrl: req.body.mediaUrl // set the media url to the post
+    mediaUrl: req.body.mediaUrl, // set the media url to the post
+    timestamp: Date.now()
   });
   post.save((error, post) => {
     if (error) {

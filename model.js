@@ -20,6 +20,10 @@ const userschema ={
 }
 
 const postschema = {
+    name:{
+        type: String,
+        required: [true, "name is mandotry"]
+    },
     title:{
         type: String,
         required: [true, "title is mandotry"]
@@ -36,6 +40,10 @@ const postschema = {
       mediaUrl: {
         type: String,
         required: [true, 'Media URL is mandatory']
+      },
+      timestamp: {
+        type: Date,
+        default: Date.now
       }
 }
 
