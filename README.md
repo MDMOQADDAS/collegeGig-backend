@@ -22,7 +22,7 @@ To get started with the CollegeGig Backend, follow the steps below:
 1. Clone the repository to your local machine:
 
 ```bash
-git clone [insert-backend-repo-url]
+git clone https://github.com/MDMOQADDAS/collegeGig-backend.git
 ```
 
 2. Navigate to the project directory:
@@ -58,7 +58,7 @@ JWT_SECRET=your_jwt_secret
 1. Start the development server:
 
 ```bash
-npm run dev
+npm start
 ```
 
 2. The server will start running at `http://localhost:3000` (or the port you specified in the `.env` file).
