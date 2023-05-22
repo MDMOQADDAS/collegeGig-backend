@@ -41,19 +41,14 @@ app.listen(port, () => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-
     const user = await User.findOne({ email });
-
     if (!user) {
       return res.status(401).json({ message: 'Auth failed' });
     }
-
     const validPassword = await bcrypt.compare(password, user.password);
-
     if (!validPassword) {
       return res.status(401).json({ message: 'Auth failed' });
     }
-
     // create jwt token
     const token = jwt.sign({ email: user.email, userId: user._id }, secret, { expiresIn: '1h' });
     //console.log(user._id)
@@ -98,15 +93,12 @@ router.get('/protected', authorize, (req, res) => {
 // Middleware for authorization
 async function authorize(req, res, next) {
   let requestedUserId=null;
-  
   try {
     const token = req.headers.authorization.split(' ')[1];
     const decoded = jwt.verify(token, secret);
-
     if (!decoded.userId) {
       return res.status(401).json({ message: 'Invalid token' });
     }
-
     // Check if user is authorized to access the resource
     if (req.params.id) {
       try {
@@ -118,26 +110,9 @@ async function authorize(req, res, next) {
         console.log(err);
       }
     }
-
-    //  if (req.params.id)
-    //  { Post.findById(req.params.id , (err, result)=>{
-     
-    //    if(result){
-    //      requestedUserId = result.userId.toString()
-    //     //console.log(requestedUserId)
-    //   }
-    //   else(err) => console.log(err)
-    //  })}
-   //here we have to work
-   //we have to write in such a way read and add don't lie in condition
-   //updated and delete go inside condition and after this take action
-
-   //console.log("post id: "  + req.params.id+ " userid: " + decoded.userId + " Request User Id: "+ requestedUserId)
     if (req.params.id &&  decoded.userId !== requestedUserId) {
-   //  console.log("inside 403 error")
       return res.status(403).json({ message: 'Not authorized to access this resource' });
     }
-
     req.userData = decoded;
     next();
   } catch (error) {
