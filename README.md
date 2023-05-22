@@ -16,6 +16,10 @@ To get started with the CollegeGig Backend, follow the steps below:
 ### Prerequisites
 
 - Node.js: Make sure you have Node.js installed on your machine. You can download it from the official website: [https://nodejs.org](https://nodejs.org)
+- MongoDB: Store the user and notes data
+![Screenshot 2023-05-18 082009](https://github.com/MDMOQADDAS/collegeGig-backend/assets/69861558/f415f3ad-2e0c-4fce-a16a-118c87b5fef5)
+![Screenshot 2023-05-18 082037](https://github.com/MDMOQADDAS/collegeGig-backend/assets/69861558/f04d5f65-7dad-467c-a106-847a34221682)
+
 
 ### Installation
 
