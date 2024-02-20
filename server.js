@@ -11,7 +11,7 @@ const port = 3001;
 
 //it'll only allow the localhost:3000
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   if (req.method === 'OPTIONS') {
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
@@ -206,107 +206,3 @@ router.delete('/posts/:id', authorize,  (req, res) => {
   });
 });
 
-// function authorize(req, res, next) {
-//   try {
-//     const authHeader = req.headers.authorization;
-//     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-//       return res.status(401).json({ message: 'Authorization header missing or invalid' });
-//     }
-//     const token = authHeader.split(" ")[1];
-//     const decoded = jwt.verify(token, secret);
-//     if (!decoded.userId) {
-//       return res.status(401).json({ message: 'Invalid token' });
-//     }
-//     // Check if user exists in database and add to req.userData
-//     // ...
-//     req.userData = decoded;
-//     next();
-//   } catch (error) {
-//     return res.status(401).json({ message: 'Auth failed' });
-//   }
-// }
-
-// // Create a new post
-// router.post('/posts', (req, res) => {
-//   const post = new Post({
-//     title: req.body.title,
-//     description: req.body.description,
-//   });
-//   post.save((error, post) => {
-//     if (error) {
-//       res.status(500).send(error);
-//     } else {
-//       res.status(201).send("Successfully saved the post");
-//     }
-//   });
-// });
-
-// //Get all the posts
-
-// router.get('/posts', (req, res) => {
-//   Post.find({}, (error, posts) => {
-//     if (error) {
-//       res.status(500).send(error);
-//     } else {
-//       res.send(posts);
-//     }
-//   });
-// });
-
-
-// // Get a single post by ID
-// router.get('/posts/:id', (req, res) => {
-//   Post.findById(req.params.id, (error, post) => {
-//     if (error) {
-//       res.status(500).send(error);
-//     } else {
-//       res.send(post);
-//     }
-//   });
-// });
-
-// // Update a post by ID
-// router.put('/posts/:id', (req, res) => {
-//   Post.findByIdAndUpdate(req.params.id, { title: req.body.title, description: req.body.description }, (error, post) => {
-//     if (error) {
-//       res.status(500).send(error);
-//     } else {
-//       res.send(post);
-//     }
-//   });
-// });
-
-// // Delete a post by ID
-// router.delete('/posts/:id', (req, res) => {
-//   Post.findByIdAndDelete(req.params.id, (error, post) => {
-//     if (error) {
-//       res.status(500).send(error);
-//     } else {
-//       res.send(post);
-//     }
-//   });
-// });
-
-
-// //object storeage in local disk
-// // Set the storage engine for multer
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, 'uploads/')
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-//   }
-// });
-
-// // Initialize multer middleware
-// const upload = multer({ storage: storage });
-
-// router.post('/notes', upload.single('file'), (req, res) => {
-
-//   const filePath = req.file.path;
-//   // Save the file path and other details to the database or perform any other actions
-//   // In this example, we're just sending back the saved file path and details
-//   // res.json({ filePath, title, description });
-//   res.status(200).send("file saved")
-// });

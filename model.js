@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost:27017/cgig").then(
+mongoose.connect(`mongodb://${process.env.MONGODB_URL}/cgig`).then(
     ()=>{console.log("Connected with the database....")}
 ).catch(()=>{console.log("Connection fail  with database...")})
 
